@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Kirsten Main — Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --bg:#060612;
+    --card:#071125;
+    --muted:#9aa4b2;
+    --text:#e6eef8;
+    --accent:#7ee0ff;
+    --accent-2:#8a7cff;
+    --glass: rgba(255,255,255,0.03);
+    --glass-2: rgba(255,255,255,0.025);
+    --glass-border: rgba(126,224,255,0.12);
+    --success:#22c55e;
+    --danger:#fb7185;
+    --shadow: 0 16px 40px rgba(2,6,23,0.7);
+    --glass-radius: 14px;
+    --blur: 10px;
+  }
+
+  /* Light mode variables */
+  :root[data-theme="light"]{
+    --bg: #f4fafc;
+    --card: #ffffff;
+    --muted: #475569;
+    --text: #061025;
+    --accent: #0969ff;
+    --accent-2: #7c3aed;
+    --glass: rgba(6,16,37,0.02);
+    --glass-2: rgba(6,16,37,0.02);
+    --glass-border: rgba(9,105,255,0.08);
+    --shadow: 0 12px 30px rgba(9,25,47,0.06);
+    --blur: 6px;
+  }
+
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0;
+    font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    background: linear-gradient(180deg,var(--bg) 0%, rgba(6,6,12,0.0) 100%);
+    color:var(--text);
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    overflow-y: auto;
+  }
+
+  /* STAR CANVAS (full screen) */
+  #starfield{
+    position:fixed;
+    inset:0;
+    z-index:0;
+    display:block;
+  }
+
+  /* subtle grid lines for techy feel */
+  .bg-grid{
+    pointer-events:none;
+    position:fixed;
+    inset:0;
+    z-index:0;
+    background-image:
+      linear-gradient(transparent 0 calc(100% - 1px), rgba(255,255,255,0.02) 100%),
+      linear-gradient(90deg, transparent 0 calc(100% - 1px), rgba(255,255,255,0.02) 100%);
+    background-size: 200px 200px, 200px 200px;
+    opacity:0.08;
+    mix-blend-mode:overlay;
+  }
+
+  /* container */
+  .wrap{
+    position:relative;
+    z-index:2;
+    max-width:1100px;
+    margin: 48px auto;
+    padding: 32px;
+  }
+
+  header{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:16px;
+    margin-bottom: 28px;
+  }
+
+  .logo {
+    display:flex;
+    align-items:center;
+    gap:12px;
+  }
+
+  .logo-badge{
+    width:52px;height:52px;border-radius:12px;
+    background:linear-gradient(135deg,var(--accent),var(--accent-2));
+    display:grid;place-items:center;font-weight:700;color: #021021;
+    box-shadow: 0 8px 30px rgba(126,224,255,0.12), inset 0 -6px 18px rgba(0,0,0,0.15);
+  }
+  .logo-text{
+    font-weight:700;font-size:18px;letter-spacing:0.6px;
+  }
+  .nav {
+    display:flex;gap:10px;align-items:center;
+  }
+
+  nav a{
+    color:var(--muted);
+    text-decoration:none;padding:8px 12px;border-radius:999px;font-weight:600;
+    font-size:13px;transition:all .18s ease;
+    border:1px solid transparent;
+    backdrop-filter: blur(var(--blur));
+  }
+  nav a:hover{ color:var(--text); background: linear-gradient(90deg, rgba(126,224,255,0.06), rgba(138,124,255,0.04)); transform:translateY(-3px); border-color:var(--glass-border); box-shadow:var(--shadow);}
+
+  /* top controls */
+  .controls{display:flex;gap:10px;align-items:center}
+  .toggle{
+    display:inline-flex;align-items:center;gap:8px;padding:6px 10px;border-radius:999px;background:var(--glass);
+    border:1px solid var(--glass-border);cursor:pointer;font-weight:600;font-size:13px;color:var(--muted);
+    box-shadow: 0 6px 18px rgba(3,8,20,0.25);
+  }
+  .toggle input{display:none}
+
+  /* MAIN SECTIONS */
+  .section{
+    display:grid;
+    grid-template-columns: 1fr 380px;
+    gap:28px;
+    margin-bottom:34px;
+    align-items:start;
+  }
+
+  @media(max-width:920px){
+    .section{ grid-template-columns: 1fr; }
+  }
+
+  .card {
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    border-radius: var(--glass-radius);
+    padding:22px;
+    border:1px solid var(--glass-border);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    transform-origin: center center;
+  }
+
+  .profile-card{
+    display:flex;flex-direction:column;gap:14px;align-items:center;text-align:center;padding:18px;
+  }
+
+  .pf-img{
+    width:180px;height:180px;border-radius:20px;overflow:hidden;border:1px solid rgba(255,255,255,0.06);
+    box-shadow: 0 18px 40px rgba(2,6,23,0.6), inset 0 -8px 30px rgba(0,0,0,0.25);
+    transition: transform .28s ease, box-shadow .28s ease;
+    background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(0,0,0,0.06));
+  }
+  .pf-img img{ width:100%;height:100%;object-fit:cover;display:block; }
+
+  .pf-img:hover{ transform: translateY(-6px) scale(1.02); box-shadow: 0 30px 70px rgba(2,6,23,0.85); }
+
+  h1{font-size:28px;margin:0 0 8px 0}
+  h2{font-size:20px;margin:0 0 10px 0;color:var(--accent)}
+  p.lead{color:var(--muted);line-height:1.6;margin-top:6px}
+
+  .tags{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+  .tag{padding:6px 10px;border-radius:999px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));font-weight:700;font-size:12px;color:var(--muted);border:1px solid rgba(255,255,255,0.02)}
+
+  /* reveal animation */
+  .reveal{ opacity:0; transform: translateY(18px) scale(.995); transition: all .65s cubic-bezier(.2,.9,.2,1); will-change:transform,opacity }
+  .reveal.in-view{ opacity:1; transform: translateY(0) scale(1) }
+
+  /* info cards */
+  .info-grid{ display:grid; grid-template-columns: repeat(2, 1fr); gap:14px; margin-top:14px }
+  @media(max-width:520px){ .info-grid{ grid-template-columns:1fr } }
+
+  .info-item{ padding:12px; border-radius:12px; background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.02)); border:1px solid rgba(255,255,255,0.02); transition: transform .22s ease, box-shadow .22s ease;}
+  .info-item:hover{ transform: translateY(-6px); box-shadow: 0 26px 60px rgba(2,6,23,0.7) }
+
+  /* image gallery */
+  .image-row{ display:grid; grid-template-columns: repeat(2, 1fr); gap:10px; margin-top:12px }
+  @media(max-width:520px){ .image-row{ grid-template-columns:1fr } }
+  .img-card{ height:120px;border-radius:12px; overflow:hidden; border:1px solid rgba(255,255,255,0.03); background:var(--card); transition: transform .18s ease }
+  .img-card img{ width:100%;height:100%;object-fit:cover; display:block }
+  .img-card:hover{ transform: translateY(-6px) scale(1.02); box-shadow: 0 24px 60px rgba(2,6,23,0.6); }
+
+  /* gallery section bigger grid */
+  .gallery-grid{ display:grid; grid-template-columns: repeat(3, 1fr); gap:10px; margin-top:12px }
+  @media(max-width:900px){ .gallery-grid{ grid-template-columns: repeat(2, 1fr) } }
+  @media(max-width:520px){ .gallery-grid{ grid-template-columns:1fr } }
+
+  /* progress bars */
+  .skills{ display:flex; flex-direction:column; gap:12px; margin-top:10px }
+  .skill-row{ display:flex; align-items:center; gap:12px }
+  .skill-name{ width:110px; font-weight:700; color:var(--muted); font-size:13px }
+  .progress-wrap{ flex:1; background: linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); padding:6px;border-radius:12px; border:1px solid rgba(255,255,255,0.02) }
+  .progress-bar{ height:14px;border-radius:8px;background:linear-gradient(90deg,var(--accent),var(--accent-2)); width:0%; box-shadow: 0 8px 22px rgba(126,224,255,0.12) }
+  .skill-percent{ width:56px; text-align:right; font-weight:800; color:var(--muted) }
+
+  /* contact card */
+  .contact-grid{ display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:12px }
+  @media(max-width:520px){ .contact-grid{ grid-template-columns:1fr } }
+  .contact-item{ padding:12px;border-radius:12px;background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.02)); border:1px solid rgba(255,255,255,0.02) }
+  .contact-item a{ color:var(--accent); text-decoration:none; font-weight:700 }
+
+  /* footer */
+  footer{ text-align:center;margin-top:28px;color:var(--muted); font-size:13px; padding-bottom:40px }
+
+  /* floating button */
+  .top-btn{ position:fixed; right:18px; bottom:18px; z-index:6; background:linear-gradient(135deg,var(--accent),var(--accent-2)); color:#021021; padding:12px 14px;border-radius:999px;font-weight:800;border:0; cursor:pointer; box-shadow:0 18px 50px rgba(2,6,23,0.35) }
+  .top-btn:hover{ transform:translateY(-5px) }
+
+  /* small tech accents */
+  .tech-line{ height:2px;background:linear-gradient(90deg, transparent, rgba(126,224,255,0.12), transparent); border-radius:2px; margin:10px 0; opacity:0.9 }
+  .muted-small{ color:var(--muted); font-size:13px }
+
+</style>
+</head>
+<body>
+
+<!-- starfield canvas -->
+<canvas id="starfield"></canvas>
+<div class="bg-grid" aria-hidden="true"></div>
+
+<div class="wrap">
+
+  <header class="reveal">
+    <div class="logo">
+      <div class="logo-badge">KM</div>
+      <div>
+        <div class="logo-text">Kirsten Main</div>
+        <div class="muted-small">First Year · Computer Engineering · Fr. CRCE</div>
+      </div>
+    </div>
+
+    <div class="nav-controls">
+      <nav class="nav">
+        <a href="#home">About</a>
+        <a href="#interests">Interests</a>
+        <a href="#work">Work</a>
+        <a href="#gallery">Gallery</a>
+        <a href="#contact">Contact</a>
+      </nav>
+
+      <div class="controls" style="margin-left:12px">
+        <div class="toggle" id="themeToggle" role="button" tabindex="0" title="Toggle dark / light">
+          <svg id="moon" width="16" height="16" viewbox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:inline-block">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" fill="white" opacity="0.92"></path>
+          </svg>
+          <span style="font-weight:700;color:var(--muted)">Theme</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- SECTION 1: HOME -->
+  <section id="home" class="section">
+    <div class="card reveal">
+      <div style="display:flex;align-items:flex-start;gap:18px;flex-wrap:wrap">
+        <div style="flex:1;min-width:220px">
+          <h1>Hi, I’m <span style="color:var(--accent)">Kirsten Main</span></h1>
+          <p class="lead">I am Kirsten Main, a first year Computer Engineering student studying at <strong>Fr. CRCE</strong>. I love solving problems, building small projects and learning new technologies.</p>
+
+          <div class="tags" aria-hidden="true">
+            <div class="tag">Computer Engineering</div>
+            <div class="tag">First Year</div>
+            <div class="tag">Aspiring Developer</div>
+          </div>
+
+          <div style="margin-top:14px;display:flex;gap:10px;flex-wrap:wrap">
+            <a class="toggle" href="#interests" style="background:transparent;border:1px solid var(--glass-border);color:var(--text)">Explore</a>
+            <a class="toggle" href="#work" style="background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#021021;border:0">See Work</a>
+          </div>
+        </div>
+
+        <!-- right side (profile card) -->
+        <aside style="width:320px;min-width:220px">
+          <div class="card profile-card">
+            <div class="pf-img" title="Profile picture (hover)">
+              <!-- Replace with your path -->
+              <img src="prof.jpeg" alt="Kirsten Main — profile photo">
+            </div>
+            <div style="text-align:center">
+              <div style="font-weight:800;font-size:16px">Kirsten Main</div>
+              <div class="muted-small">First Year · Computer Engineering · Fr. CRCE</div>
+            </div>
+
+            <div style="width:100%;margin-top:6px">
+              <div class="tech-line"></div>
+              <div style="display:flex;justify-content:space-between;margin-top:10px">
+                <div class="muted-small">Status</div>
+                <div style="font-weight:800;color:var(--accent)">Actively learning</div>
+              </div>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 2: INTERESTS & ACHIEVEMENTS -->
+  <section id="interests" class="section">
+    <div class="card reveal">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap">
+        <div>
+          <h2>Interests & Hobbies</h2>
+          <p class="muted-small">I enjoy coding, exploring new tech, and solving problems. Off-screen, I play cricket, chess and love cycling.</p>
+        </div>
+      </div>
+
+      <div class="info-grid" style="margin-top:16px">
+        <div class="info-item">
+          <strong>Interests</strong>
+          <p class="muted-small" style="margin-top:8px">Coding · Exploring · Problem Solving</p>
+        </div>
+        <div class="info-item">
+          <strong>Hobbies</strong>
+          <p class="muted-small" style="margin-top:8px">Cricket · Chess · Cycling</p>
+        </div>
+        <div class="info-item">
+          <strong>Goals</strong>
+          <p class="muted-small" style="margin-top:8px">Become a strong problem solver, build meaningful projects and contribute to open-source.</p>
+        </div>
+        <div class="info-item">
+          <strong>Achievements</strong>
+          <p class="muted-small" style="margin-top:8px">Snapshots of things I'm proud of.</p>
+        </div>
+      </div>
+
+      <!-- Two achievement images -->
+      <div class="image-row reveal" style="margin-top:12px">
+        <div class="img-card" tabindex="0"><img src="ach1.jpeg" alt="Achievement 1"></div>
+        <div class="img-card" tabindex="0"><img src="ach2.jpeg" alt="Achievement 2"></div>
+      </div>
+    </div>
+
+    <aside class="card reveal" style="min-height:160px">
+      <h3 style="margin:0 0 8px 0">Quick Summary</h3>
+      <p class="muted-small">Curious, motivated, and building skills step by step. I like to blend logic with creative solutions.</p>
+      <div style="height:10px"></div>
+      <div class="tech-line"></div>
+      <p style="margin-top:10px" class="muted-small">Want these images optimized for web? Rename them to smaller sizes (e.g. 800px wide) to reduce load time.</p>
+    </aside>
+  </section>
+
+  <!-- SECTION 3: WORK -->
+  <section id="work" class="section">
+    <div class="card reveal">
+      <h2>My Work</h2>
+      <p class="muted-small">Small projects and practice exercises that helped me learn fundamentals.</p>
+
+      <div class="info-grid" style="margin-top:12px">
+        <div class="info-item">
+          <strong>What I build</strong>
+          <p class="muted-small">Beginner programs (C/C++), small web pages and logic puzzles to strengthen algorithms.</p>
+        </div>
+        <div class="info-item">
+          <strong>Focus</strong>
+          <p class="muted-small">Clean code, reproducible steps, and iterative improvement.</p>
+        </div>
+      </div>
+
+      <div style="margin-top:14px">
+        <h3 style="margin:0 0 8px 0">Work snapshots</h3>
+        <div class="image-row reveal">
+          <div class="img-card" tabindex="0"><img src="work1.jpeg" alt="Work 1"></div>
+          <div class="img-card" tabindex="0"><img src="work2.jpeg" alt="Work 2"></div>
+        </div>
+      </div>
+    </div>
+
+    <aside class="card reveal">
+      <h3 style="margin:0 0 8px 0">Progress Tracker</h3>
+
+      <div class="skills" aria-hidden="false">
+        <!-- Python 40% -->
+        <div class="skill-row">
+          <div class="skill-name">Python</div>
+          <div class="progress-wrap" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="40">
+            <div class="progress-bar" data-percent="40"></div>
+          </div>
+          <div class="skill-percent"><span class="percent-num" data-target="40">0</span>%</div>
+        </div>
+
+        <!-- C/C++ 50% -->
+        <div class="skill-row">
+          <div class="skill-name">C / C++</div>
+          <div class="progress-wrap">
+            <div class="progress-bar" data-percent="50"></div>
+          </div>
+          <div class="skill-percent"><span class="percent-num" data-target="50">0</span>%</div>
+        </div>
+
+        <!-- Java 20% -->
+        <div class="skill-row">
+          <div class="skill-name">Java</div>
+          <div class="progress-wrap">
+            <div class="progress-bar" data-percent="20"></div>
+          </div>
+          <div class="skill-percent"><span class="percent-num" data-target="20">0</span>%</div>
+        </div>
+
+        <!-- HTML/CSS 40% -->
+        <div class="skill-row">
+          <div class="skill-name">HTML / CSS</div>
+          <div class="progress-wrap">
+            <div class="progress-bar" data-percent="40"></div>
+          </div>
+          <div class="skill-percent"><span class="percent-num" data-target="40">0</span>%</div>
+        </div>
+      </div>
+    </aside>
+  </section>
+
+  <!-- SECTION 4: GALLERY -->
+  <section id="gallery" class="section">
+    <div class="card reveal">
+      <h2>Gallery</h2>
+      <p class="muted-small">A few of my best images and moments.</p>
+
+      <div class="gallery-grid reveal" style="margin-top:12px">
+        <div class="img-card" tabindex="0"><img src="gal1.jpeg" alt=""></div>
+        <div class="img-card" tabindex="0"><img src="gal2.jpeg" alt=""></div>
+        <div class="img-card" tabindex="0"><img src="gal3.jpeg" alt=""></div>
+        <div class="img-card" tabindex="0"><img src="gal4.jpeg" alt=""></div>
+        <div class="img-card" tabindex="0"><img src="gal5.jpeg" alt=""></div>
+      </div>
+    </div>
+
+    <aside class="card reveal">
+      <h3 style="margin:0 0 8px 0">Gallery Notes</h3>
+      <p class="muted-small">Click any image to preview. Use high-quality images but compress them for web.</p>
+    </aside>
+  </section>
+
+  <!-- SECTION 5: CONTACT -->
+  <section id="contact" class="section">
+    <div class="card reveal">
+      <h2>Contact Me</h2>
+      <p class="muted-small">I’m open to collaborations, internships or a quick chat about tech!</p>
+
+      <div class="contact-grid reveal">
+        <div class="contact-item">
+          <strong>Phone</strong>
+          <p style="margin-top:8px"><a href="tel:+919890858825">+91 98908 58825</a></p>
+        </div>
+
+        <div class="contact-item">
+          <strong>Email</strong>
+          <p style="margin-top:8px"><a href="mailto:kirstenmain002@gmail.com">kirstenmain002@gmail.com</a></p>
+        </div>
+
+        <div class="contact-item">
+          <strong>LinkedIn</strong>
+          <p style="margin-top:8px"><a href="https://www.linkedin.com/in/kirsten-main-9b31b6385" target="_blank" rel="noopener noreferrer">View my LinkedIn</a></p>
+        </div>
+
+        <div class="contact-item">
+          <strong>Location</strong>
+          <p style="margin-top:8px" class="muted-small">Mumbai, India</p>
+        </div>
+      </div>
+    </div>
+
+    <aside class="card reveal">
+      <h3 style="margin:0 0 8px 0">Thanks for visiting</h3>
+      <p class="muted-small">If you'd like, I can export this site into separate pages or add a downloadable resume button.</p>
+    </aside>
+  </section>
+
+  <footer class="reveal">© <span id="year"></span> Kirsten Main — Built with HTML, CSS & JS</footer>
+
+</div>
+
+<button class="top-btn" id="topBtn" title="Back to top">Top ↑</button>
+
+<script>
+/* -------------------------
+   STARFIELD (canvas)
+   ------------------------- */
+(function(){
+  const canvas = document.getElementById('starfield');
+  const ctx = canvas.getContext('2d');
+  let w = canvas.width = innerWidth;
+  let h = canvas.height = innerHeight;
+  let stars = [];
+  const STAR_COUNT = Math.floor((w*h)/9000);
+
+  function rand(min,max){ return Math.random()*(max-min)+min }
+  function init(){
+    stars = [];
+    for(let i=0;i<STAR_COUNT;i++){
+      stars.push({
+        x: Math.random()*w,
+        y: Math.random()*h,
+        z: rand(0.2,1.0),
+        vx: rand(-0.03,0.03),
+        vy: rand(-0.03,0.03),
+        size: rand(0.4,1.8),
+        twinkle: Math.random()*Math.PI*2
+      });
+    }
+  }
+
+  function resize(){ w = canvas.width = innerWidth; h = canvas.height = innerHeight; init(); }
+
+  window.addEventListener('resize', resize);
+
+  function draw(){
+    ctx.clearRect(0,0,w,h);
+    // faint nebula gradient
+    let g = ctx.createLinearGradient(0,0,w,h);
+    g.addColorStop(0, 'rgba(10,12,20,0.05)');
+    g.addColorStop(1, 'rgba(10,12,20,0.08)');
+    ctx.fillStyle = g;
+    ctx.fillRect(0,0,w,h);
+
+    for(let s of stars){
+      s.x += s.vx;
+      s.y += s.vy;
+      s.twinkle += 0.04;
+      if(s.x < -10) s.x = w+10;
+      if(s.x > w+10) s.x = -10;
+      if(s.y < -10) s.y = h+10;
+      if(s.y > h+10) s.y = -10;
+
+      const alpha = 0.45 + Math.sin(s.twinkle)*0.45;
+      const radius = s.size * (0.9 + Math.sin(s.twinkle*1.3)*0.5);
+      ctx.beginPath();
+      ctx.fillStyle = 'rgba(255,255,255,'+ (alpha*0.9*s.z) +')';
+      ctx.arc(s.x, s.y, radius, 0, Math.PI*2);
+      ctx.fill();
+    }
+
+    requestAnimationFrame(draw);
+  }
+
+  init();
+  draw();
+})();
+
+/* -------------------------
+   Reveal on scroll
+   ------------------------- */
+(function(){
+  const obs = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){ e.target.classList.add('in-view'); obs.unobserve(e.target); }
+    })
+  }, {threshold: 0.12});
+
+  document.querySelectorAll('.reveal').forEach(el=> obs.observe(el));
+})();
+
+/* -------------------------
+   Progress bars animation
+   ------------------------- */
+(function(){
+  const bars = document.querySelectorAll('.progress-bar');
+  const nums = document.querySelectorAll('.percent-num');
+
+  function animateBar(bar, target){
+    // simple width animation using requestAnimationFrame
+    let start = null;
+    const duration = 1000 + target*8;
+    const from = 0;
+    function step(ts){
+      if(!start) start = ts;
+      const progress = Math.min((ts-start)/duration,1);
+      const eased = 1 - Math.pow(1-progress,3);
+      bar.style.width = (eased*target)+'%';
+      if(progress < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
+
+  function animateNumber(el, target){
+    let start = null; const duration = 900 + target*10;
+    function frame(ts){
+      if(!start) start = ts;
+      const t = Math.min((ts-start)/duration,1);
+      const eased = Math.floor(t*target);
+      el.textContent = eased;
+      if(t < 1) requestAnimationFrame(frame);
+      else el.textContent = target;
+    }
+    requestAnimationFrame(frame);
+  }
+
+  // trigger when progress area is visible
+  const progArea = document.querySelector('#work');
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        bars.forEach(b=>{
+          const target = parseInt(b.dataset.percent || 0,10);
+          animateBar(b, target);
+        });
+        nums.forEach(n=>{
+          const target = parseInt(n.dataset.target || 0,10);
+          animateNumber(n,target);
+        });
+        io.disconnect();
+      }
+    });
+  }, {threshold: 0.2});
+  io.observe(progArea);
+})();
+
+/* -------------------------
+   Simple image click preview (lightbox)
+   ------------------------- */
+(function(){
+  document.querySelectorAll('.img-card img').forEach(img=>{
+    img.style.cursor = 'zoom-in';
+    img.addEventListener('click', ()=> openPreview(img.src));
+  });
+
+  function openPreview(src){
+    const overlay = document.createElement('div');
+    overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.75);display:grid;place-items:center;z-index:9999;cursor:zoom-out;';
+    const big = document.createElement('img');
+    big.src = src; big.style.maxWidth='92%'; big.style.maxHeight='92%'; big.style.borderRadius='12px'; big.style.boxShadow='0 30px 80px rgba(0,0,0,0.6)';
+    overlay.appendChild(big);
+    overlay.addEventListener('click', ()=> document.body.removeChild(overlay));
+    document.body.appendChild(overlay);
+  }
+})();
+
+/* -------------------------
+   Scroll to top btn
+   ------------------------- */
+document.getElementById('topBtn').addEventListener('click', ()=> window.scrollTo({top:0,behavior:'smooth'}));
+
+/* -------------------------
+   Theme toggle
+   ------------------------- */
+(function(){
+  const toggle = document.getElementById('themeToggle');
+  const root = document.documentElement;
+
+  // default: dark
+  if(!root.hasAttribute('data-theme')) root.setAttribute('data-theme','dark');
+
+  function switchTheme(){
+    const cur = root.getAttribute('data-theme');
+    root.setAttribute('data-theme', cur === 'dark' ? 'light' : 'dark');
+  }
+  toggle.addEventListener('click', switchTheme);
+  toggle.addEventListener('keypress', (e)=> { if(e.key === 'Enter') switchTheme(); });
+
+  // update icon (moon/sun)
+  const updateIcon = ()=>{
+    const moon = document.getElementById('moon');
+    const t = root.getAttribute('data-theme');
+    if(t === 'dark'){
+      moon.innerHTML = '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" fill="white" opacity="0.92"></path>';
+    } else {
+      moon.innerHTML = '<path d="M12 3v2M12 19v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M1 12h2M21 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4" stroke="white" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"></path>';
+    }
+  }
+  toggle.addEventListener('click', updateIcon);
+  // run once at start
+  updateIcon();
+})();
+
+/* -------------------------
+   set year
+   ------------------------- */
+document.getElementById('year').textContent = new Date().getFullYear();
+
+/* -------------------------
+   small keyboard accessibility: jump nav with 1..5
+   ------------------------- */
+window.addEventListener('keydown', (e)=>{
+  if(e.key >= '1' && e.key <= '5'){
+    const ids = ['home','interests','work','gallery','contact'];
+    const idx = parseInt(e.key,10)-1;
+    const el = document.getElementById(ids[idx]);
+    if(el) el.scrollIntoView({behavior:'smooth',block:'start'});
+  }
+});
+</script>
+
+</body>
+</html>
+
+
+
